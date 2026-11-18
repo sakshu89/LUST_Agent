@@ -6,3 +6,21 @@ local.properties
 *.jks
 *.keystore
 .DS_Store
+
+# Build / IDE
+.gradle/
+**/build/
+.idea/
+*.iml
+local.properties
+
+# Needle 3 local binaries / model
+needle
+needle3
+needle3.cact
+*.cact
+
+# Termux / temporary files
+*.log
+*.tmp
+.DS_Store
