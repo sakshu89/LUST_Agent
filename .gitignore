@@ -86,3 +86,21 @@ needle3.cact
 *.log
 *.tmp
 .DS_Store
+
+# Build / IDE
+.gradle/
+**/build/
+.idea/
+*.iml
+local.properties
+
+# Needle 3 local model/binaries
+needle
+needle3
+needle3.cact
+*.cact
+
+# Temporary files
+*.log
+*.tmp
+.DS_Store
