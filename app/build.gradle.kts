@@ -20,7 +20,27 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions { jvmTarget = "17" }
-    buildFeatures { compose = true }
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
+
+    // Supply LUST_CLOUD_API_KEY and LUST_CLOUD_ENDPOINT as CI secrets/Gradle properties.
+    // Never commit the real key to source control.
+    defaultConfig {
+        buildConfigField(
+            "String",
+            "LUST_CLOUD_API_KEY",
+            "\"" + (providers.gradleProperty("LUST_CLOUD_API_KEY").orNull
+                ?: System.getenv("LUST_CLOUD_API_KEY") ?: "") + "\""
+        )
+        buildConfigField(
+            "String",
+            "LUST_CLOUD_ENDPOINT",
+            "\"" + (providers.gradleProperty("LUST_CLOUD_ENDPOINT").orNull
+                ?: System.getenv("LUST_CLOUD_ENDPOINT") ?: "") + "\""
+        )
+    }
     packaging { resources.excludes += "/META-INF/{AL2.0,LGPL2.1}" }
 }
 

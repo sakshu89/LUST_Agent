@@ -1,17 +1,37 @@
-# LUST-Agent — Phase 1 source bundle
+# LUST Agent — Phase 1 repaired build
 
-This is the first assembled Android Studio project created from the LUST code and requirements supplied in the conversation.
+## What was repaired
+- Fixed the Kotlin string-literal compiler error in `ChatScreen.kt`.
+- Reworked the chat layout to fit narrow phone screens.
+- Added an always-visible Send button.
+- Added a microphone/voice-input button with runtime `RECORD_AUDIO` permission.
+- Added Free Hand Agent mode with an animated HUD.
+- Added a local `PartnerRouter` that classifies action/tool requests vs language/reasoning requests.
+- Added a cooperative model-worker scheduler so two local decoders do not intentionally run at the same time.
+- Added safe build-time cloud configuration fields. The actual API key is **not** stored in source.
+- Kept the existing Gradle/Compose project structure rather than rebuilding the project from scratch.
 
-## Included now
-- Android app using Kotlin and Jetpack Compose.
-- Minimal chat interface with local conversation persistence.
-- Deterministic mock responses (not a real LLM).
-- Gradle project configuration and GitHub Actions debug-APK workflow.
+## Important runtime limitation
+The supplied source bundle contains **no Cactus/Needle native library, Cactus Kotlin bindings, llama.cpp binary, Qwen model file, Vosk library, accessibility service, or cloud provider endpoint implementation**. Therefore this repaired bundle does not pretend those components are already integrated.
 
-## Important status
-This is a **Phase 1 starter bundle**, not the completed autonomous Android agent. The earlier pasted source contained truncated UI and compile errors, so this archive uses a clean, minimal app foundation rather than copying broken fragments. Hermes, accessibility automation, notification reading, voice, task planning, and CapCut recipes are not integrated yet. They will be added after this baseline is inspected and built.
+The router and worker interfaces are the integration seam for the real project:
+- Needle/Cactus worker → device automation and structured tool calls.
+- Qwen/llama.cpp worker → conversation, planning and language.
+- Cloud worker → optional fallback when explicitly configured.
+
+Cactus documents Android integration through a native `libcactus.so` plus Kotlin bindings, and its engine supports completion, tool calling and cloud handoff. Needle is documented as a small on-device tool-calling model. Those native artifacts must be added to this project before a real Needle runtime can execute.
+
+## Cloud secret
+Provide these only through CI/local Gradle configuration:
+- `LUST_CLOUD_API_KEY`
+- `LUST_CLOUD_ENDPOINT`
+
+Never commit a real key to GitHub. The API key pasted in chat should be rotated/revoked.
 
 ## Build
-Open this folder in Android Studio (JDK 17; Android SDK 35), sync Gradle, then run `:app:assembleDebug`. The GitHub Actions workflow builds the debug APK on push or manual dispatch.
+The GitHub Actions workflow uses JDK 17 and Android SDK 35 and runs:
+- debug APK build
+- unit tests
+- Android lint
 
-No API keys or model weights are included. The app makes no network requests.
+The project still requires a normal Android/Gradle environment to perform the final build.
