@@ -1,0 +1,8 @@
+DELETE THIS FILE:
+app/src/main/java/ai/lust/MainActivity.kt
+
+Reason:
+The project already has the active MainActivity at:
+app/src/main/kotlin/ai/lust/MainActivity.kt
+
+Keeping both creates a duplicate ai.lust.MainActivity class.
