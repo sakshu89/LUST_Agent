@@ -18,6 +18,9 @@ jobs:
     name: Build, test and lint Android app
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
@@ -28,13 +31,25 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      # Use the runner's installed command-line tools. The legacy SDK package "tools" is retired.
+      - name: Install Android SDK packages
+        run: |
+          yes | sdkmanager --licenses >/dev/null
+          sdkmanager --install \
+            "platform-tools" \
+            "platforms;android-35" \
+            "build-tools;35.0.0"
 
       - name: Set up Gradle 8.9
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
+
+      - name: Verify toolchain
+        run: |
+          java -version
+          gradle --version
+          sdkmanager --list_installed
 
       - name: Build debug APK
         run: gradle --no-daemon :app:assembleDebug
