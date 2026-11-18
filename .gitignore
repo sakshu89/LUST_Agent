@@ -1,10 +1,16 @@
+<<<<<<< HEAD
 **/.gradle/
+=======
+.gradle/
+build/
+>>>>>>> origin/main
 **/build/
 .idea/
 *.iml
 local.properties
 *.jks
 *.keystore
+<<<<<<< HEAD
 .DS_Store
 
 # Build / IDE
@@ -21,6 +27,26 @@ needle3.cact
 *.cact
 
 # Termux / temporary files
+*.log
+*.tmp
+.DS_Store
+=======
+>>>>>>> origin/main
+
+# Build / IDE
+.gradle/
+**/build/
+.idea/
+*.iml
+local.properties
+
+# Needle 3 local model/binaries
+needle
+needle3
+needle3.cact
+*.cact
+
+# Temporary files
 *.log
 *.tmp
 .DS_Store
